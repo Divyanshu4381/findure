@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   card: {
     width: 120,
     height: 170,
-    backgroundColor: 'rgba(255,255,255,0.1)', // glassmorphic effect
+    backgroundColor: 'rgba(255,255,255,0.1)', 
     marginRight: 14,
     borderRadius: 20,
     alignItems: 'center',

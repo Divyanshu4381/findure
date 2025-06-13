@@ -9,7 +9,6 @@ const HeaderSearchBar = () => {
 
   return (
     <View style={styles.container}>
-      {/* Top Row: Avatar + Logo + Bell */}
       <View style={styles.topRow}>
         <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
           <Icon
@@ -19,7 +18,6 @@ const HeaderSearchBar = () => {
           />
         </TouchableOpacity>
 
-        {/* ✅ Fixed this part */}
         <View style={styles.logoTextContainer}>
           <Text style={[styles.logoText, { color: '#10b981' }]}>Find</Text>
           <Text style={[styles.logoText, { color: '#FFFFFF' }]}>ure</Text>

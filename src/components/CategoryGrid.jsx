@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
-const ITEM_WIDTH = (width - 40) / 4; // 4 items with spacing
+const ITEM_WIDTH = (width - 40) / 4; 
 
 const categories = [
   { title: 'B2b', icon: require('../assets/icons/b2b.png') },

@@ -4,7 +4,7 @@ import { View, Text, Platform, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import HomeScreen from '../screens/HomeScreen';
 import ExploreScreen from '../screens/ExploreScreen';
-import HomeStack from './tabs/HomeStack'; // ✅ path check kar lena
+import HomeStack from './tabs/HomeStack'; 
 import ProfileStack from './tabs/ProfileStack';
 import NewsScreen from '../screens/NewsScreen';
 
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   tabIconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: width / 5, // Fix for text overflow
+    width: width / 5, 
   },
   tabLabel: {
     fontSize: width * 0.03,

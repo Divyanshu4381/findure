@@ -40,7 +40,7 @@ const EventAndCitySection = () => {
             key={index}
             style={[
               styles.eventCard,
-              index === 0 ? { marginRight: 5 } : { marginLeft: 5 }, // gap between cards
+              index === 0 ? { marginRight: 5 } : { marginLeft: 5 },  // do card me gap dene ke beech me gap
             ]}
           >
             <Image source={item.image} style={styles.eventImage} />
@@ -50,7 +50,6 @@ const EventAndCitySection = () => {
       </View>
 
 
-      {/* Top Cities */}
       <Text style={styles.heading}>Explore Top Cities</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {cities.map((city, index) => (

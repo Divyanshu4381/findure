@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = width * 0.28; // ~28% of screen width
+const CARD_WIDTH = width * 0.28; // ~28%  screen width ke liye 
 const IMAGE_SIZE = CARD_WIDTH;
 
 const healthData = [

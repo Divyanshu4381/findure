@@ -74,7 +74,6 @@ const BusinessListingScreen = () => {
         ))}
       </ScrollView>
 
-      {/* Shortcut Services Grid with ImageBackground */}
       <View style={styles.serviceGridContainer}>
         {shortcutServices.map((item, index) => (
           <TouchableOpacity key={index} style={styles.serviceCard}>

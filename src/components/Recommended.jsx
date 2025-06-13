@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = width * 0.6; // ~60% of screen width
+const CARD_WIDTH = width * 0.6; // ~60%  screen width ke liye
 const CARD_HEIGHT = 200;
 
 const categories = [
