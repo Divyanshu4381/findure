@@ -1,4 +1,3 @@
-// NewsScreen.js
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -16,13 +15,39 @@ const NewsScreen = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchFallbackImage = async (url) => {
+    try {
+      const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+      const json = await response.json();
+      return json?.data?.image?.url || null;
+    } catch (error) {
+      console.error('Fallback image error:', error);
+      return null;
+    }
+  };
+
+  const enhanceNewsWithImages = async (articles) => {
+    const enhancedNews = await Promise.all(
+      articles.map(async (item) => {
+        if (!item.image && item.url) {
+          const fallback = await fetchFallbackImage(item.url);
+          return { ...item, image: fallback };
+        }
+        return item;
+      })
+    );
+    return enhancedNews;
+  };
+
   const fetchNews = async () => {
     try {
       const response = await fetch(
         'http://api.mediastack.com/v1/news?access_key=99e6dca7325590f62c29dd786f734433&countries=in&languages=en&limit=20'
       );
       const json = await response.json();
-      setNews(json.data); // ✅ correctly accessing articles from 'data' field
+      const data = json.data;
+      const newsWithImages = await enhanceNewsWithImages(data);
+      setNews(newsWithImages);
     } catch (error) {
       console.error('Error fetching news:', error);
     } finally {
