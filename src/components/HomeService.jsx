@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons'; // Correct import
-
+import Ionicons from 'react-native-vector-icons/Ionicons'; 
+import { useNavigation } from '@react-navigation/native';
 const services = [
   { id: '1', name: 'Ac Repair', icon: '📺' },
   { id: '2', name: 'Carpenters', icon: '🔨' },
@@ -16,9 +16,9 @@ const services = [
 ];
 
 const HomeService = () => {
-
+  const navigation = useNavigation()
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('BusinessBySubcategory')}>
       <View style={styles.left}>
         <Text style={styles.icon}>{item.icon}</Text>
         <Text style={styles.name}>{item.name}</Text>
@@ -30,8 +30,11 @@ const HomeService = () => {
   return (
     <View style={styles.container}>
       <View>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
 
-      <Text style={styles.header}>Home Services</Text>
+          <Ionicons name="arrow-back" size={24} color="#000" />
+        </TouchableOpacity>
+        <Text style={styles.header}>Home Services</Text>
       </View>
       <FlatList
         data={services}
