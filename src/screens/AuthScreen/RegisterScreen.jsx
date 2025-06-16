@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Linking, Animated } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Linking, Animated, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 
-const SignInForm = ({ navigation }) => {
+const RegisterForm = ({ navigation }) => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState(null);
   const [fadeAnim] = useState(new Animated.Value(0));
   const [headingAnim] = useState(new Animated.Value(0));
+  const [isFocusedUsername, setIsFocusedUsername] = useState(false);
   const [isFocusedEmail, setIsFocusedEmail] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
 
@@ -27,6 +30,13 @@ const SignInForm = ({ navigation }) => {
     ]).start();
   }, []);
 
+  // Function to handle avatar selection (implement your image picker logic here)
+  const handleAvatarPick = () => {
+    // Add your image picker implementation here
+    // For example, using react-native-image-picker
+    console.log('Avatar picker opened');
+  };
+
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.wrapper, { opacity: fadeAnim }]}>
@@ -45,8 +55,21 @@ const SignInForm = ({ navigation }) => {
             outputRange: [20, 0],
           }) }]
         }]}>
-          Welcome Back
+          Create Account
         </Animated.Text>
+
+        <View style={[styles.inputContainer, isFocusedUsername && styles.inputContainerFocused]}>
+          <Icon name="person-outline" size={20} color={isFocusedUsername ? '#10b981' : '#94a3b8'} style={styles.inputIcon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            placeholderTextColor="#94a3b8"
+            value={username}
+            onChangeText={setUsername}
+            onFocus={() => setIsFocusedUsername(true)}
+            onBlur={() => setIsFocusedUsername(false)}
+          />
+        </View>
 
         <View style={[styles.inputContainer, isFocusedEmail && styles.inputContainerFocused]}>
           <Icon name="mail-outline" size={20} color={isFocusedEmail ? '#10b981' : '#94a3b8'} style={styles.inputIcon} />
@@ -76,8 +99,19 @@ const SignInForm = ({ navigation }) => {
           />
         </View>
 
-        <TouchableOpacity onPress={() => Linking.openURL('#')}>
-          <Text style={styles.forgot}>Forgot Password?</Text>
+        <TouchableOpacity 
+          style={styles.avatarContainer}
+          onPress={handleAvatarPick}
+          activeOpacity={0.7}
+        >
+          {avatar ? (
+            <Image source={{ uri: avatar }} style={styles.avatarImage} />
+          ) : (
+            <View style={styles.avatarPlaceholder}>
+              <Icon name="camera-outline" size={24} color="#94a3b8" />
+              <Text style={styles.avatarText}>Add Avatar</Text>
+            </View>
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity activeOpacity={0.8}>
@@ -88,19 +122,13 @@ const SignInForm = ({ navigation }) => {
             end={{ x: 1, y: 1 }}
           >
             <Text style={styles.buttonText}>
-              Sign In
-              <Icon name="log-in-outline" size={20} color="#fff" style={styles.buttonIcon} />
+              Register
+              <Icon name="person-add-outline" size={20} color="#fff" style={styles.buttonIcon} />
             </Text>
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.register}>
-            Don't have an account? <Text style={styles.registerLink}>Register</Text>
-          </Text>
-        </TouchableOpacity>
-
-        <Text style={styles.orText}>Or Sign in with</Text>
+        <Text style={styles.orText}>Or Register with</Text>
 
         <View style={styles.socialRow}>
           <TouchableOpacity style={[styles.socialButton, { backgroundColor: '#DB4437' }]}>
@@ -124,7 +152,7 @@ const SignInForm = ({ navigation }) => {
   );
 };
 
-export default SignInForm;
+export default RegisterForm;
 
 const styles = StyleSheet.create({
   container: {
@@ -193,24 +221,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-  forgot: {
-    fontSize: 14,
-    color: '#38bdf8',
-    textAlign: 'right',
+  avatarContainer: {
+    alignItems: 'center',
     marginBottom: 20,
-    fontWeight: '600',
-    textDecorationLine: 'underline',
   },
-  register: {
-    fontSize: 14,
+  avatarImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#10b981',
+  },
+  avatarPlaceholder: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#2E2E3E',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#94a3b8',
+  },
+  avatarText: {
     color: '#94a3b8',
-    textAlign: 'center',
-    marginBottom: 20,
+    fontSize: 12,
+    marginTop: 4,
     fontWeight: '600',
-  },
-  registerLink: {
-    color: '#38bdf8',
-    textDecorationLine: 'underline',
   },
   button: {
     padding: 16,
