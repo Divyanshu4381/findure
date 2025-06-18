@@ -20,6 +20,11 @@ const ProfileScreen = () => {
           setIsLoading(false);
           return;
         }
+        else{
+          console.log('Access Token:', accessToken);
+          navigation.navigate('Home');
+
+        }
 
 
 

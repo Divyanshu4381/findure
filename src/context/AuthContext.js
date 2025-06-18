@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         
         if (accessToken) {
           // Verify token and fetch user data
-          const response = await axios.get(`${API_BASE_URL}/api/v1/users/me`, {
+          const response = await axios.get(`${API_BASE_URL}/api/v1/users/current-user`, {
             headers: {
               Authorization: `Bearer ${accessToken}`
             }
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error('Error loading user:', error);
         // Clear tokens if they're invalid
-        if (error.response?.status === 401) {
+        if (error?.response?.status === 401) {
           await clearTokens();
         }
       } finally {

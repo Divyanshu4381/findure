@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, ScrollView, Alert, Image
+  StyleSheet, ScrollView, Alert, Image, PermissionsAndroid, Platform,
+  KeyboardAvoidingView, SafeAreaView
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 
@@ -23,6 +25,7 @@ const BusinessForm = () => {
   });
 
   const [image, setImage] = useState(null);
+  const [locationLoading, setLocationLoading] = useState(false);
 
   const handleInputChange = (key, value) => {
     setFormData(prev => ({ ...prev, [key]: value }));
@@ -36,11 +39,72 @@ const BusinessForm = () => {
     }
   };
 
+  if (!Geolocation || typeof Geolocation.getCurrentPosition !== 'function') {
+    Alert.alert('Error', 'Geolocation service not available.');
+    setLocationLoading(false);
+    return;
+  }
+
+  const getCurrentLocation = async () => {
+    try {
+      setLocationLoading(true);
+      const hasPermission = await requestLocationPermission();
+      if (!hasPermission) {
+        Alert.alert('Permission denied', 'Location permission is required.');
+        setLocationLoading(false);
+        return;
+      }
+
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { longitude, latitude } = position.coords;
+          setFormData((prev) => ({
+            ...prev,
+            longitude: longitude.toString(),
+            latitude: latitude.toString()
+          }));
+          setLocationLoading(false);
+        },
+        (error) => {
+          console.error(error);
+          Alert.alert('Location error', error.message);
+          setLocationLoading(false);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    } catch (err) {
+      console.error(err);
+      setLocationLoading(false);
+    }
+  };
+
+  const requestLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'ios') return true;
+
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      ]);
+
+      return (
+        granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
+      );
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
     try {
-      // Basic validation
+      if (!formData.longitude || !formData.latitude) {
+        await getCurrentLocation();
+      }
+
       if (!image || Object.values(formData).some(val => !val.trim())) {
-        Alert.alert('Error', 'All fields are required');
+        Alert.alert('Error', 'All fields and image are required');
         return;
       }
 
@@ -61,7 +125,7 @@ const BusinessForm = () => {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer <your_token>` // pass auth token here
+            Authorization: `Bearer <your_token>`
           }
         }
       );
@@ -74,42 +138,55 @@ const BusinessForm = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.heading}>List Your Business</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+          <Text style={styles.heading}>List Your Business</Text>
 
-      {[
-        'businessName', 'businessAddress', 'businessDescription',
-        'phoneNumber', 'businessCategory', 'businessType',
-        'experience', 'openTime', 'closeTime', 'longitude', 'latitude'
-      ].map(field => (
-        <TextInput
-          key={field}
-          placeholder={field}
-          value={formData[field]}
-          onChangeText={(text) => handleInputChange(field, text)}
-          style={styles.input}
-        />
-      ))}
+          {[
+            'businessName', 'businessAddress', 'businessDescription',
+            'phoneNumber', 'businessCategory', 'businessType',
+            'experience', 'openTime', 'closeTime'
+          ].map(field => (
+            <TextInput
+              key={field}
+              placeholder={field}
+              value={formData[field]}
+              placeholderTextColor="gray"
 
-      <TouchableOpacity onPress={handleImagePick} style={styles.imagePicker}>
-        <Text style={styles.imagePickerText}>Pick Business Image</Text>
-      </TouchableOpacity>
+              onChangeText={(text) => handleInputChange(field, text)}
+              style={styles.input}
+            />
+          ))}
 
-      {image && (
-        <Image
-          source={{ uri: image.uri }}
-          style={styles.preview}
-        />
-      )}
+          <TouchableOpacity onPress={handleImagePick} style={styles.imagePicker}>
+            <Text style={styles.imagePickerText}>Choose Business Image</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleSubmit} style={styles.submitBtn}>
-        <Text style={styles.submitText}>Submit</Text>
-      </TouchableOpacity>
-    </ScrollView>
+          {image && (
+            <Image
+              source={{ uri: image.uri }}
+              style={styles.preview}
+            />
+          )}
+
+          <TouchableOpacity onPress={getCurrentLocation} style={styles.locationBtn}>
+            <Text style={styles.submitText}>
+              {locationLoading ? 'Fetching location...' : 'Get My Location'}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleSubmit} style={styles.submitBtn}>
+            <Text style={styles.submitText}>Submit</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 export default BusinessForm;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -135,11 +212,18 @@ const styles = StyleSheet.create({
   },
   imagePickerText: {
     color: '#fff',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   preview: {
     height: 150,
     width: '100%',
+    borderRadius: 8,
+    marginBottom: 10
+  },
+  locationBtn: {
+    backgroundColor: '#f0ad4e',
+    padding: 15,
     borderRadius: 8,
     marginBottom: 10
   },
