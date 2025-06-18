@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import DrawerNavigator from './src/navigation/DrawerNavigator';
 import Orientation from 'react-native-orientation-locker';
+import { AuthProvider } from './src/context/AuthContext';
 
 const App = () => {
   useEffect(() => {
@@ -13,9 +14,11 @@ const App = () => {
     
   }, []);
   return (
-    <NavigationContainer>
-      <DrawerNavigator />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <DrawerNavigator />
+      </NavigationContainer>
+    </AuthProvider>
   );
 };
 
