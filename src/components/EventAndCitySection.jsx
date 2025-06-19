@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -30,6 +31,7 @@ const cities = [
 ];
 
 const EventAndCitySection = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {/* Events */}
@@ -41,7 +43,11 @@ const EventAndCitySection = () => {
             style={[
               styles.eventCard,
               index === 0 ? { marginRight: 5 } : { marginLeft: 5 },  // do card me gap dene ke beech me gap
+              { elevation: 2 }
             ]}
+            onPress={() => navigation.navigate('BusinessBySubcategory', {
+              title: item.title,
+            })}
           >
             <Image source={item.image} style={styles.eventImage} />
             <Text style={styles.eventTitle}>{item.title}</Text>
@@ -53,7 +59,11 @@ const EventAndCitySection = () => {
       <Text style={styles.heading}>Explore Top Cities</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {cities.map((city, index) => (
-          <TouchableOpacity key={index} style={styles.cityCard}>
+          <TouchableOpacity key={index} style={styles.cityCard}
+            onPress={() => navigation.navigate('TopCities', {
+              cityName: city.name,
+            })}
+          >
             <Image source={city.image} style={styles.cityImage} />
             <View style={styles.overlay}>
               <Text style={styles.cityText}>{city.name}</Text>

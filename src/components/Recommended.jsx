@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
     View,
@@ -25,13 +26,18 @@ const categories = [
 ];
 
 const RecommendedCategories = () => {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Recommended Categories</Text>
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {categories.map((item, index) => (
-                    <TouchableOpacity key={index} style={styles.card}>
+                    <TouchableOpacity key={index} style={styles.card}
+                        onPress={() => navigation.navigate('BusinessBySubcategory', {
+                            title: item.name,
+                        })}
+                    >
                         <Image source={item.image} style={styles.cardImage} />
                         <View style={styles.textContainer}>
                             <Text style={styles.cardText} numberOfLines={2}>

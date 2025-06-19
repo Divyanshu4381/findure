@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomSignInButton from '../components/ui/CustomSignInButton';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../context/AuthContext';
 import { getTokens, clearTokens } from '../utils/storage';
+
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -19,32 +28,13 @@ const ProfileScreen = () => {
         if (!accessToken) {
           setIsLoading(false);
           return;
-        }
-        else{
-          console.log('Access Token:', accessToken);
-          navigation.navigate('Home');
-
-        }
-
-
-
-      } catch (error) {
-        console.error('Detailed Error:', {
-          message: error.message,
-          response: error.response?.data,
-          status: error.response?.status,
-          config: error.config
-        });
-
-        if (error.response?.status === 401) {
-          // Token is invalid/expired
-          getTokens()
-          Alert.alert('Session Expired', 'Please login again');
-        } else if (error.message.includes('network')) {
-          Alert.alert('Network Error', 'Please check your internet connection');
         } else {
-          Alert.alert('Profile Error', 'Could not load profile information');
+          console.log('Access Token:', accessToken);
+          // You can fetch user profile here if needed
         }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        Alert.alert('Error', 'Could not load profile information');
       } finally {
         setIsLoading(false);
       }
@@ -57,12 +47,10 @@ const ProfileScreen = () => {
     try {
       clearTokens();
       setUser(null);
-
       navigation.reset({
         index: 0,
         routes: [{ name: 'Home' }],
       });
-
       Alert.alert('Success', 'You have been logged out successfully');
     } catch (error) {
       console.error('Logout failed:', error);
@@ -80,7 +68,6 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Close Button */}
       <TouchableOpacity
         style={styles.closeButton}
         onPress={() => navigation.goBack()}
@@ -90,18 +77,17 @@ const ProfileScreen = () => {
       </TouchableOpacity>
 
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Header Section */}
         <View style={styles.header}>
           {user ? (
             <>
+              {user.avatar ? (
+                <Image source={{ uri: user.avatar }} style={styles.profileImage} />
+              ) : (
+                <Icon name="person-circle-outline" size={80} color="#ccc" />
+              )}
               <Text style={styles.greeting}>Hi {user.username || 'User'}!</Text>
               <Text style={styles.emailText}>{user.email}</Text>
-              <TouchableOpacity
-                style={styles.logoutButton}
-                onPress={handleLogout}
-                activeOpacity={0.7}
-              >
-                
+              <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.logoutText}>Logout</Text>
                 <Icon name="log-out-outline" size={18} color="#dc3545" />
               </TouchableOpacity>
@@ -110,41 +96,40 @@ const ProfileScreen = () => {
             <>
               <Text style={styles.greeting}>Hi Guest!</Text>
               <Text style={styles.subText}>Sign in to unlock the full experience</Text>
-              <CustomSignInButton
-                onPress={() => navigation.navigate('Login')}
-                style={styles.signInButton}
-              />
+              <CustomSignInButton onPress={() => navigation.navigate('Login')} />
             </>
           )}
         </View>
 
-        {/* Business Features (only for logged in users) */}
         {user && (
           <>
             <TouchableOpacity
               style={styles.businessCard}
-              activeOpacity={0.7}
               onPress={() => navigation.navigate('AddBusiness')}
             >
               <View style={styles.businessIcon}>
                 <Icon name="business-outline" size={20} color="#10b981" />
               </View>
-              <Text style={styles.businessText}>List your Business for <Text style={styles.freeText}>Free</Text></Text>
+              <Text style={styles.businessText}>
+                List your Business for <Text style={styles.freeText}>Free</Text>
+              </Text>
               <Icon name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.adCard}
-              activeOpacity={0.7}
-            >
+            <TouchableOpacity style={styles.adCard}>
               <Icon name="megaphone-outline" size={18} color="#10b981" />
               <Text style={styles.adText}>Advertise & Grow your Business</Text>
+              <Icon name="chevron-forward" size={18} color="#666" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.adCard}>
+              <Icon name="business-outline" size={18} color="#10b981" />
+              <Text style={styles.adText}>Manage Your Business</Text>
               <Icon name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
           </>
         )}
 
-        {/* App Settings Section */}
         <Text style={styles.sectionTitle}>App Settings</Text>
 
         <View style={styles.languageContainer}>
@@ -154,7 +139,6 @@ const ProfileScreen = () => {
               <TouchableOpacity
                 key={idx}
                 style={[styles.langBtn, idx === 0 && styles.langBtnActive]}
-                activeOpacity={0.7}
               >
                 <Text style={[styles.langText, idx === 0 && styles.langTextActive]}>{lang}</Text>
               </TouchableOpacity>
@@ -162,7 +146,6 @@ const ProfileScreen = () => {
           </View>
         </View>
 
-        {/* Options List */}
         {[
           { label: 'Settings', icon: 'settings-outline', screen: 'Settings' },
           { label: 'App Feedback', icon: 'chatbox-ellipses-outline', screen: 'Feedback' },
@@ -172,7 +155,6 @@ const ProfileScreen = () => {
           <TouchableOpacity
             key={idx}
             style={styles.optionRow}
-            activeOpacity={0.7}
             onPress={() => item.screen ? navigation.navigate(item.screen) : item.action?.()}
           >
             <View style={styles.optionIcon}>
@@ -183,10 +165,9 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         ))}
 
-        {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>App Version 1.0.0</Text>
-          <Text style={styles.footerText}>© 2025 Riveyra Infotech </Text>
+          <Text style={styles.footerText}>© 2025 Riveyra Infotech</Text>
         </View>
       </ScrollView>
     </View>
@@ -229,6 +210,12 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 5,
   },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 15,
+  },
   emailText: {
     fontSize: 14,
     color: '#666',
@@ -239,10 +226,6 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 20,
     textAlign: 'center',
-  },
-  signInButton: {
-    marginTop: 10,
-    width: '80%',
   },
   logoutButton: {
     flexDirection: 'row',

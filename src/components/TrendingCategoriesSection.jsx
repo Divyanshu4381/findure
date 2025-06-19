@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 const trendingItems = [
   {
-    title: 'Interior Designers',
+    title: 'Interior Designer',
     searches: '479 Searches',
     image: require('../assets/trending/interior.jpg'),
   },
@@ -20,16 +21,21 @@ const trendingItems = [
 ];
 
 const TrendingCategoriesSection = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Trending Categories near you</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
         {trendingItems.map((item, index) => (
-          <View key={index} style={styles.card}>
+          <TouchableOpacity key={index} style={styles.card}
+            onPress={() => navigation.navigate('BusinessBySubcategory', {
+              title: item.title,
+            })}
+          >
             <Image source={item.image} style={styles.image} />
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.subtitle}>{item.searches}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>

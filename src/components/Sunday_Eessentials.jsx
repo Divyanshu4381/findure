@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -22,6 +23,7 @@ const sundayItems = [
 ];
 
 const Sunday_Essentials = () => {
+  const navigation = useNavigation();
   return (
     <ImageBackground
       source={require('../assets/sunday_essentials/B.jpg')}
@@ -33,7 +35,11 @@ const Sunday_Essentials = () => {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {sundayItems.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.card}>
+          <TouchableOpacity key={index} style={styles.card}
+            onPress={() => navigation.navigate('BusinessBySubcategory', {
+              title: item.title,
+            })}
+          >
             <View style={styles.imageWrapper}>
               <Image source={item.image} style={styles.cardImage} />
             </View>
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
   card: {
     width: 120,
     height: 170,
-    backgroundColor: 'rgba(255,255,255,0.1)', 
+    backgroundColor: 'rgba(255,255,255,0.1)',
     marginRight: 14,
     borderRadius: 20,
     alignItems: 'center',

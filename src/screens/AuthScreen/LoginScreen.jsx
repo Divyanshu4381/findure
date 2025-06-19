@@ -57,7 +57,7 @@ const SignInForm = () => {
       
       // Save tokens to storage
       await saveTokens({ accessToken, refreshToken });
-      
+      console.log('Tokens saved successfully:', { accessToken, refreshToken });
       // Update user context
       setUser(user);
 

@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 const rentItems = [
   {
@@ -21,15 +22,19 @@ const rentItems = [
 ];
 
 const RentHireSection = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Rent & Hire</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
         {rentItems.map((item, index) => (
-          <View key={index} style={styles.card}>
+          <TouchableOpacity key={index} style={styles.card} 
+          onPress={() => navigation.navigate('BusinessBySubcategory', {
+                                      title: item.title,
+                                  })}>
             <Image source={item.image} style={styles.image} />
             <Text style={styles.title}>{item.title}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>

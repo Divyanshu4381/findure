@@ -33,6 +33,7 @@ const HeaderSearchBar = () => {
           style={styles.input}
           placeholder="Search for services, shops, etc."
           placeholderTextColor="#A0AEC0"
+          
         />
         <View style={styles.rightIcons}>
           <TouchableOpacity style={styles.iconButton}>

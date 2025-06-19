@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import HeaderSearchBar from '../components/HeaderSearchBar';
 import CategoryGrid from '../components/CategoryGrid';
-import BusinessListingScreen from '../components/BusinessListingScreen';
 // import EducationSection from '../components/EducationSection';
 import Sunday_Essentials from '../components/Sunday_Eessentials';
 import HealthFitness from '../components/HealthFitness';
@@ -13,6 +12,7 @@ import B2BProductSection from '../components/B2BProductSection';
 import BeautyGroomingSection from '../components/BeautyGroomingSection';
 import RentHireSection from '../components/RentHireSection';
 import TrendingCategoriesSection from '../components/TrendingCategoriesSection';
+import HomeServices from '../components/HomeServices';
 
 const HomeScreen = () => {
   return (
@@ -30,7 +30,7 @@ const HomeScreen = () => {
           </View>
 
           <View style={styles.sectionContainer}>
-            <BusinessListingScreen />
+            <HomeServices />
           </View>
 
           <View style={styles.sectionContainer}>

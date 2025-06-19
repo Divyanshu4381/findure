@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const BusinessListingScreen = () => {
+const HomeServices = () => {
   const navigation = useNavigation();
 
   const serviceCategories = [
@@ -48,7 +48,10 @@ const BusinessListingScreen = () => {
       {/* Categories Title with Icon */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Home Services</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('HomeService')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BusinessBySubcategory', {
+            title: 'Home Services',
+          })}>
           <Image
             source={require('../assets/icons/arrowRightIcon.png')}
             style={styles.sectionIcon}
@@ -56,11 +59,15 @@ const BusinessListingScreen = () => {
           />
         </TouchableOpacity>
       </View>
+      
+
 
       {/* Horizontal Categories */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
         {serviceCategories.map((category, index) => (
-          <TouchableOpacity key={index} style={styles.categoryCard}>
+          <TouchableOpacity key={index} style={styles.categoryCard} onPress={() => navigation.navigate('BusinessBySubcategory', {
+            title: category.name,
+          })}>
             <ImageBackground
               source={category.image}
               style={styles.categoryBackground}
@@ -220,4 +227,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BusinessListingScreen;
+export default HomeServices;

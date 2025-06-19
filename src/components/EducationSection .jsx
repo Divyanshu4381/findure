@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
     View,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 
 const EducationSection = () => {
+    const navigation = useNavigation();
     const educationItems = [
         { title: 'Schools', image: require('../assets/education/schools.jpg') },
         { title: 'Colleges', image: require('../assets/education/colleges.jpg') },
@@ -20,17 +22,24 @@ const EducationSection = () => {
             {/* Title Row */}
             <View style={styles.headerRow}>
                 <Text style={styles.sectionTitle}>Education</Text>
-                <Image
-                    source={require('../assets/icons/arrowRightIcon.png')}
-                    style={styles.sectionIcon}
-                    resizeMode="contain"
-                />
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('BusinessBySubcategory', {
+                        title: 'Education',
+                    })}>
+                    <Image
+                        source={require('../assets/icons/arrowRightIcon.png')}
+                        style={styles.sectionIcon}
+                        resizeMode="contain"
+                    />
+                </TouchableOpacity>
             </View>
 
             {/* Horizontal Scroll Cards */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {educationItems.map((item, index) => (
-                    <TouchableOpacity key={index} style={styles.card}>
+                    <TouchableOpacity key={index} style={styles.card} onPress={() => navigation.navigate('BusinessBySubcategory', {
+            title: item.title,
+          })}>
                         <Image source={item.image} style={styles.image} />
                         <Text style={styles.title}>{item.title}</Text>
                     </TouchableOpacity>
