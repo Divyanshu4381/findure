@@ -4,7 +4,6 @@ import {
   StyleSheet, ActivityIndicator, Image, Dimensions, Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { API_BASE_URL } from '../../config';
 
@@ -48,7 +47,7 @@ const BusinessBySubcategory = () => {
   const renderBusinessCard = ({ item }) => {
     return (
       <View style={styles.card}>
-        <LinearGradient colors={['#a7f3d0', '#10b981']} style={styles.header}>
+        <View style={styles.header}>
           <View style={styles.imageContainer}>
             {item.businessImage ? (
               <Image
@@ -58,14 +57,14 @@ const BusinessBySubcategory = () => {
                 style={styles.serviceImage}
               />
             ) : (
-              <Icon name="business" size={width * 0.1} color="#fff" />
+              <Icon name="business" size={width * 0.1} color="#6b7280" />
             )}
           </View>
 
           <View style={styles.leftContent}>
             <Text style={styles.name}>{item.businessName || 'Unnamed'}</Text>
             <View style={styles.ratingRow}>
-              <Icon name="star" size={width * 0.04} color="#FFD700" />
+              <Icon name="star" size={width * 0.04} color="#f59e0b" />
               <Text style={styles.ratingText}>{item.rating || 4.5}</Text>
               <Text style={styles.ratingSubText}> ({item.ratingsCount || 50} Ratings)</Text>
             </View>
@@ -74,9 +73,7 @@ const BusinessBySubcategory = () => {
             </Text>
             <Text style={styles.status}>Open until {item.closeTime || '9:00 pm'}</Text>
           </View>
-
-          
-        </LinearGradient>
+        </View>
 
         <View style={styles.detailBox}>
           <Text style={styles.review}>{item.businessDescription || 'No description provided'}</Text>
@@ -84,15 +81,15 @@ const BusinessBySubcategory = () => {
 
         <View style={styles.actionRow}>
           <TouchableOpacity style={styles.actionButton} onPress={() => Linking.openURL(`tel:${item.phoneNumber}`)}>
-            <Icon name="call" size={width * 0.04} color="#10b981" />
+            <Icon name="call" size={width * 0.04} color="#3b82f6" />
             <Text style={styles.actionText}>Call Now</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
-            <Icon name="mail" size={width * 0.04} color="#10b981" />
+            <Icon name="mail" size={width * 0.04} color="#3b82f6" />
             <Text style={styles.actionText}>Enquiry</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={() => Linking.openURL(`whatsapp://send?phone=${item.phoneNumber}`)}>
-            <Icon name="logo-whatsapp" size={width * 0.04} color="#10b981" />
+            <Icon name="logo-whatsapp" size={width * 0.04} color="#3b82f6" />
             <Text style={styles.actionText}>WhatsApp</Text>
           </TouchableOpacity>
         </View>
@@ -104,17 +101,17 @@ const BusinessBySubcategory = () => {
     <View style={styles.container}>
       <View style={styles.searchBar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={width * 0.06} color="#10b981" />
+          <Icon name="arrow-back" size={width * 0.06} color="#3b82f6" />
         </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder={`Search ${title}...`}
-          placeholderTextColor="#6b7280"
+          placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity>
-          <Icon name="mic" size={width * 0.055} color="#10b981" />
+          <Icon name="mic" size={width * 0.055} color="#3b82f6" />
         </TouchableOpacity>
       </View>
 
@@ -123,7 +120,7 @@ const BusinessBySubcategory = () => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#10b981" style={styles.loader} />
+        <ActivityIndicator size="large" color="#3b82f6" style={styles.loader} />
       ) : error ? (
         <Text style={styles.errorText}>{error}</Text>
       ) : (
@@ -141,67 +138,151 @@ const BusinessBySubcategory = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafb' },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f8fafc' // Light neutral background
+  },
   searchBar: {
-    flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff',
-    margin: width * 0.04, paddingHorizontal: width * 0.03,
-    borderRadius: 12, elevation: 4,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    backgroundColor: '#fff',
+    margin: width * 0.04, 
+    paddingHorizontal: width * 0.03,
+    borderRadius: 12, 
+    elevation: 2, 
+    shadowColor: '#000', 
+    shadowOpacity: 0.1, 
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
   },
   searchInput: {
-    flex: 1, paddingVertical: 10, paddingHorizontal: 12,
-    fontSize: 16, color: '#1f2937',
+    flex: 1, 
+    paddingVertical: 12, 
+    paddingHorizontal: 12,
+    fontSize: 16, 
+    color: '#1f2937',
+    fontWeight: '400',
   },
   filterRow: {
-    flexDirection: 'row', justifyContent: 'space-between',
-    alignItems: 'center', paddingHorizontal: width * 0.04,
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    alignItems: 'center', 
+    paddingHorizontal: width * 0.04,
     marginBottom: height * 0.015,
   },
-  resultsText: { fontSize: 18, fontWeight: '700', color: '#1f2937' },
-  list: { paddingHorizontal: width * 0.04, paddingBottom: height * 0.02 },
+  resultsText: { 
+    fontSize: 18, 
+    fontWeight: '600', 
+    color: '#1f2937' 
+  },
+  list: { 
+    paddingHorizontal: width * 0.04, 
+    paddingBottom: height * 0.02 
+  },
   card: {
-    backgroundColor: '#fff', borderRadius: 12, marginBottom: 16,
-    elevation: 4, shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8,
+    backgroundColor: '#fff', 
+    borderRadius: 12, 
+    marginBottom: 16,
+    elevation: 3, 
+    shadowColor: '#000', 
+    shadowOpacity: 0.1, 
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
   },
   header: {
-    flexDirection: 'row', alignItems: 'center',
-    padding: 12, borderTopLeftRadius: 12, borderTopRightRadius: 12,
+    flexDirection: 'row', 
+    alignItems: 'center',
+    padding: 16, 
+    backgroundColor: '#fff', // White header instead of green gradient
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
   },
   imageContainer: {
-    width: 100, height: 90, borderRadius: 8,
-    overflow: 'hidden', marginRight: 12,
+    width: 80, 
+    height: 80, 
+    borderRadius: 8,
+    overflow: 'hidden', 
+    marginRight: 12,
+    backgroundColor: '#f1f5f9', // Subtle background for placeholder
   },
-  serviceImage: { width: '100%', height: '100%' },
-  leftContent: { flex: 1, paddingRight: 8 },
-  name: { fontSize: 16, fontWeight: '700', color: '#fff', marginBottom: 4 },
-  ratingRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
-  ratingText: { fontSize: 14, fontWeight: 'bold', color: '#fff', marginLeft: 4 },
-  ratingSubText: { fontSize: 12, color: '#d1fae5', marginLeft: 4 },
-  location: { fontSize: 12, color: '#d1fae5', marginBottom: 2 },
-  status: { fontSize: 12, color: '#d1fae5' },
-  callBtn: {
-    backgroundColor: '#047857', paddingHorizontal: 12, paddingVertical: 6,
-    borderRadius: 8, flexDirection: 'row', alignItems: 'center',
+  serviceImage: { 
+    width: '100%', 
+    height: '100%' 
   },
-  callLabel: { color: '#fff', fontSize: 14, marginLeft: 6, fontWeight: '600' },
+  leftContent: { 
+    flex: 1 
+  },
+  name: { 
+    fontSize: 18, 
+    fontWeight: '700', 
+    color: '#1f2937', 
+    marginBottom: 6 
+  },
+  ratingRow: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 6 
+  },
+  ratingText: { 
+    fontSize: 14, 
+    fontWeight: '600', 
+    color: '#1f2937', 
+    marginLeft: 4 
+  },
+  ratingSubText: { 
+    fontSize: 12, 
+    color: '#6b7280', 
+    marginLeft: 4 
+  },
+  location: { 
+    fontSize: 13, 
+    color: '#6b7280', 
+    marginBottom: 4 
+  },
+  status: { 
+    fontSize: 12, 
+    color: '#10b981', 
+    fontWeight: '500' 
+  },
   detailBox: {
-    flexDirection: 'row', alignItems: 'flex-start',
-    backgroundColor: '#f0fdf4', padding: 12,
-    borderBottomLeftRadius: 12, borderBottomRightRadius: 12,
+    padding: 16,
+    backgroundColor: '#fff',
   },
-  detailIcon: { marginTop: 2, marginRight: 8 },
-  review: { fontSize: 14, color: '#374151', flex: 1, lineHeight: 20 },
+  review: { 
+    fontSize: 14, 
+    color: '#4b5563', 
+    lineHeight: 20 
+  },
   actionRow: {
-    flexDirection: 'row', justifyContent: 'space-around',
-    paddingVertical: 12, borderTopWidth: 1, borderTopColor: '#e5e7eb',
+    flexDirection: 'row', 
+    justifyContent: 'space-around',
+    paddingVertical: 12, 
+    borderTopWidth: 1, 
+    borderTopColor: '#e5e7eb',
   },
   actionButton: {
-    flexDirection: 'row', alignItems: 'center',
-    paddingVertical: 8, paddingHorizontal: 12,
-    borderRadius: 8, backgroundColor: '#e0f2f7',
+    flexDirection: 'row', 
+    alignItems: 'center',
+    paddingVertical: 8, 
+    paddingHorizontal: 16,
+    borderRadius: 8, 
+    backgroundColor: '#f1f5f9', // Subtle blue-gray for buttons
   },
-  actionText: { fontSize: 14, color: '#10b981', marginLeft: 6, fontWeight: '500' },
-  loader: { marginTop: 40 },
-  errorText: { textAlign: 'center', marginTop: 40, color: '#ef4444', fontSize: 16 },
+  actionText: { 
+    fontSize: 14, 
+    color: '#3b82f6', 
+    marginLeft: 6, 
+    fontWeight: '600' 
+  },
+  loader: { 
+    marginTop: 40 
+  },
+  errorText: { 
+    textAlign: 'center', 
+    marginTop: 40, 
+    color: '#ef4444', 
+    fontSize: 16 
+  },
 });
 
 export default BusinessBySubcategory;

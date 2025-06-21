@@ -122,7 +122,7 @@ const ProfileScreen = () => {
               <Icon name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.adCard}>
+            <TouchableOpacity style={styles.adCard} onPress={() => navigation.navigate('ManageBusiness')}>
               <Icon name="business-outline" size={18} color="#10b981" />
               <Text style={styles.adText}>Manage Your Business</Text>
               <Icon name="chevron-forward" size={18} color="#666" />
@@ -132,19 +132,7 @@ const ProfileScreen = () => {
 
         <Text style={styles.sectionTitle}>App Settings</Text>
 
-        <View style={styles.languageContainer}>
-          <Text style={styles.languageTitle}>Select Language</Text>
-          <View style={styles.languageRow}>
-            {['English', 'हिंदी', 'தமிழ்', 'ಕನ್ನಡ'].map((lang, idx) => (
-              <TouchableOpacity
-                key={idx}
-                style={[styles.langBtn, idx === 0 && styles.langBtnActive]}
-              >
-                <Text style={[styles.langText, idx === 0 && styles.langTextActive]}>{lang}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+        
 
         {[
           { label: 'Settings', icon: 'settings-outline', screen: 'Settings' },

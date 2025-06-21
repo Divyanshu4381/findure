@@ -28,10 +28,10 @@ const RentHireSection = () => {
       <Text style={styles.heading}>Rent & Hire</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
         {rentItems.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.card} 
-          onPress={() => navigation.navigate('BusinessBySubcategory', {
-                                      title: item.title,
-                                  })}>
+          <TouchableOpacity key={index} style={styles.card}
+            onPress={() => navigation.navigate('BusinessBySubcategory', {
+              title: item.title,
+            })}>
             <Image source={item.image} style={styles.image} />
             <Text style={styles.title}>{item.title}</Text>
           </TouchableOpacity>

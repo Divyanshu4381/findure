@@ -9,9 +9,10 @@ import {
   Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { useUser } from '../context/AuthContext';
 const HomeServices = () => {
   const navigation = useNavigation();
+  const { user } = useUser();
 
   const serviceCategories = [
     { name: 'AC REPAIR', image: require('../assets/businessList/ac.jpeg') },
@@ -31,6 +32,13 @@ const HomeServices = () => {
     { title: 'PAY', subtitle: 'BILLS', image: require('../assets/businessList/paybills.png') },
   ];
 
+  // const handleBusinessRegistration = () => {
+  //   if (user) {
+  //     navigation.navigate('AddBusiness', {  userId: user.uid });
+  //   } else {
+  //     navigation.navigate('Login', { from: 'HomeServices' });
+  //   }
+  // }
   return (
     <ScrollView style={styles.container}>
       {/* Hero Section */}
@@ -40,7 +48,8 @@ const HomeServices = () => {
           <Text style={styles.freeText}>Free</Text>
         </View>
         <Text style={styles.heroSubtitle}>Reach thousands of customers in your area</Text>
-        <TouchableOpacity style={styles.startNowButton}>
+        <TouchableOpacity style={styles.startNowButton}
+          onPress={()=>navigation.navigate('AddBusiness')}>
           <Text style={styles.startNowText}>Start Now</Text>
         </TouchableOpacity>
       </View>

@@ -5,6 +5,7 @@ import LoginScreen from '../../screens/AuthScreen/LoginScreen';
 import RegisterForm from '../../screens/AuthScreen/RegisterScreen';
 import BusinessRegistrationForm from '../../screens/BusinessListingFromScreen';
 import AddBusiness from '../../screens/BusinessListingFromScreen';
+import ManageBusinessScreen from '../../screens/ManageBusinessScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -22,7 +23,7 @@ const ProfileStack = () => {
           headerShown: false,
         }}
       />
-      
+
       <Stack.Screen
         name="AddBusiness"
         component={AddBusiness}
@@ -40,6 +41,8 @@ const ProfileStack = () => {
           animation: 'slide_from_bottom',
           headerShown: false,
         }} />
+      <Stack.Screen name="ManageBusiness" component={ManageBusinessScreen} />
+
 
     </Stack.Navigator>
   );
