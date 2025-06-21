@@ -93,7 +93,7 @@ const HeaderSearchBar = () => {
           <Text style={[styles.logoText, { color: '#10b981' }]}>Find</Text>
           <Text style={[styles.logoText, { color: '#fff' }]}>ure</Text>
         </View>
-        <BellButton />
+        {/* <BellButton /> */}
       </View>
 
       <View style={styles.searchContainer}>

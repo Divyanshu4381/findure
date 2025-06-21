@@ -17,6 +17,7 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen name="Main" component={BottomTabNavigator} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
+      
     </Drawer.Navigator>
   );
 };

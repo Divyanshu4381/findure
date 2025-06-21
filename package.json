@@ -29,6 +29,7 @@
     "react-native-mime-types": "^2.5.0",
     "react-native-orientation-locker": "^1.7.0",
     "react-native-permissions": "^5.4.1",
+    "react-native-rate": "^1.2.12",
     "react-native-reanimated": "^3.18.0",
     "react-native-safe-area-context": "^5.4.1",
     "react-native-screens": "^4.11.1",
@@ -54,6 +55,7 @@
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "2.8.8",
+    "react-native-make": "^1.0.1",
     "react-test-renderer": "19.0.0",
     "typescript": "5.0.4"
   },

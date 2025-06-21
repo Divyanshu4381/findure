@@ -7,7 +7,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { API_BASE_URL } from '../../config'; 
+import { API_BASE_URL } from '../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ManageBusinessScreen = () => {
@@ -26,7 +26,6 @@ const ManageBusinessScreen = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const businessData = response.data.data || [];
-      console.log('Businesses data:', JSON.stringify(businessData, null, 2)); // Debug log
       setBusinesses(businessData);
     } catch (error) {
       Alert.alert('Error', error.response?.data?.message || 'Failed to load businesses. Please try again.');
@@ -83,40 +82,48 @@ const ManageBusinessScreen = () => {
   }, []);
 
   const renderItem = ({ item }) => {
-    const businessId = item._id || item.id; 
-    
+    const businessId = item._id || item.id;
+
     return (
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.title}>{item.businessName}</Text>
-          <View style={styles.actionButtons}>
-            <Pressable
-              style={styles.actionButton}
-              // onPress={() => handleEdit(item)}
-              disabled={deleting === businessId}
-            >
-              <Icon name="pencil" size={18} color="#10b981" />
-            </Pressable>
-            <Pressable
-              style={styles.actionButton}
-              onPress={() => handleDelete(businessId)}
-              disabled={deleting === businessId}
-            >
-              {deleting === businessId ? (
-                <ActivityIndicator size="small" color="#ef4444" />
-              ) : (
-                <Icon name="trash" size={18} color="#ef4444" />
-              )}
-            </Pressable>
+      <>
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.title}>{item.businessName}</Text>
+            <View style={styles.actionButtons}>
+              <Pressable
+                style={styles.actionButton}
+                // onPress={() => handleEdit(item)}
+                disabled={deleting === businessId}
+              >
+                <Icon name="pencil" size={18} color="#10b981" />
+              </Pressable>
+              <Pressable
+                style={styles.actionButton}
+                onPress={() => handleDelete(businessId)}
+                disabled={deleting === businessId}
+              >
+                {deleting === businessId ? (
+                  <ActivityIndicator size="small" color="#ef4444" />
+                ) : (
+                  <Icon name="trash" size={18} color="#ef4444" />
+                )}
+              </Pressable>
+            </View>
+          </View>
+          <Text style={styles.sub}>{item.businessCategory} | {item.businessType}</Text>
+          <Text style={styles.desc} numberOfLines={2} ellipsizeMode="tail">
+            {item.businessDescription || 'No description available'}
+          </Text>
+
+          <View style={styles.cardFooter}>
+            <Text style={styles.footerText}>Last updated: {new Date(item.updatedAt).toDateString()}</Text>
+            <Text style={styles.footerText}>
+              Created at: {new Date(item.createdAt).toDateString()}
+            </Text>
           </View>
         </View>
-        <Text style={styles.sub}>{item.businessCategory} | {item.businessType}</Text>
-        <Text style={styles.desc} numberOfLines={2} ellipsizeMode="tail">
-          {item.businessDescription || 'No description available'}
-        </Text>
-        
-      </View>
-      
+
+      </>
     );
   };
 
@@ -250,6 +257,16 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  cardFooter: {
+    marginTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+    paddingTop: 8,
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#9ca3af',
   },
 });
 export default ManageBusinessScreen;

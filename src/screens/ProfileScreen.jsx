@@ -8,6 +8,7 @@ import {
   Alert,
   ActivityIndicator,
   Image,
+  Share
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomSignInButton from '../components/ui/CustomSignInButton';
@@ -15,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../context/AuthContext';
 import { getTokens, clearTokens } from '../utils/storage';
+import Rate, { AndroidMarket } from 'react-native-rate';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -65,7 +67,42 @@ const ProfileScreen = () => {
       </View>
     );
   }
+  const shareApp = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'Check out this amazing app on Play Store: https://play.google.com/store/apps/details?id=com.findure',
+      });
 
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // Shared with activity type of result.activityType
+        } else {
+          // Shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // Dismissed
+      }
+    } catch (error) {
+      console.error('Error sharing app:', error.message);
+    }
+  };
+
+  const handleRate = () => {
+    
+    const options = {
+      AppleAppID: '123456789', // for iOS (you can leave it as is for Android only)
+      GooglePackageName: 'com.findure', // ⚠️ Make sure this matches your app's package name
+      preferInApp: true,
+      fallbackPlatform: AndroidMarket.Google,
+    };
+
+    Rate.rate(options, (success) => {
+      if (success) {
+        console.log('User went to the store to rate the app');
+      }
+    });
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -116,11 +153,7 @@ const ProfileScreen = () => {
               <Icon name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.adCard}>
-              <Icon name="megaphone-outline" size={18} color="#10b981" />
-              <Text style={styles.adText}>Advertise & Grow your Business</Text>
-              <Icon name="chevron-forward" size={18} color="#666" />
-            </TouchableOpacity>
+
 
             <TouchableOpacity style={styles.adCard} onPress={() => navigation.navigate('ManageBusiness')}>
               <Icon name="business-outline" size={18} color="#10b981" />
@@ -132,12 +165,12 @@ const ProfileScreen = () => {
 
         <Text style={styles.sectionTitle}>App Settings</Text>
 
-        
+
 
         {[
           { label: 'Settings', icon: 'settings-outline', screen: 'Settings' },
-          { label: 'App Feedback', icon: 'chatbox-ellipses-outline', screen: 'Feedback' },
-          { label: 'Share App', icon: 'share-social-outline', action: () => console.log('Share') },
+          { label: 'App Feedback', icon: 'chatbox-ellipses-outline', action: () => handleRate() },
+          { label: 'Share App', icon: 'share-social-outline', action: () => shareApp() },
           { label: 'Customer Support', icon: 'headset-outline', screen: 'Support' },
         ].map((item, idx) => (
           <TouchableOpacity

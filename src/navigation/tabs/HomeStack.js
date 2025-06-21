@@ -5,19 +5,18 @@ import BusinessBySubcategory from '../../components/BusinessBySubcategory';
 import SearchResultsScreen from '../../screens/SearchResultsScreen';
 import AddBusiness from '../../screens/BusinessListingFromScreen';
 import LoginScreen from '../../screens/AuthScreen/LoginScreen';
-import { useUser } from '../../context/AuthContext'; // Assuming you have a context for user authentication
+import { useUser } from '../../context/AuthContext'; 
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
-  const { user } = useUser(); // Access the user context
+  const { user } = useUser(); 
   const AuthProtect= (Component) => {
     return (props) => {
       if (!user) {
-        // If user is not authenticated, redirect to Login
         props.navigation.navigate('Login', { from: 'HomeStack' });
-        return null; // Prevent rendering the component
+        return null; 
       }
-      return <Component {...props} />; // Render the component if authenticated
+      return <Component {...props} />;
     };
   }
   return (

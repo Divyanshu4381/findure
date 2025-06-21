@@ -123,3 +123,11 @@ dependencies {
 }
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'com.android.support') {
+            throw new GradleException("Old support library detected: ${details.requested}. Please use AndroidX.")
+        }
+    }
+}

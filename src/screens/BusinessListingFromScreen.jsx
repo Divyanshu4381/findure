@@ -21,8 +21,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const BusinessForm = () => {
+  const navigation = useNavigation();
+
   const [formData, setFormData] = useState({
     businessName: '',
     businessAddress: '',
@@ -130,6 +133,7 @@ const BusinessForm = () => {
   };
 
   const handleSubmit = async () => {
+    console.log("i am here")
     try {
       setSubmitting(true);
 
@@ -146,7 +150,6 @@ const BusinessForm = () => {
         'longitude',
         'latitude',
       ];
-
       const missingFields = requiredFields.filter((f) => !formData[f].trim());
       if (missingFields.length > 0) {
         Alert.alert('Error', `Please fill: ${missingFields.join(', ')}`);
@@ -184,9 +187,12 @@ const BusinessForm = () => {
 
       Alert.alert('Success', 'Business added successfully!');
       setSubmitting(false);
+      navigation.goBack();
+
     } catch (error) {
       Alert.alert('Error', error.response?.data?.message || 'Something went wrong');
       setSubmitting(false);
+
     }
   };
 

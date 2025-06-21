@@ -32,13 +32,7 @@ const HomeServices = () => {
     { title: 'PAY', subtitle: 'BILLS', image: require('../assets/businessList/paybills.png') },
   ];
 
-  // const handleBusinessRegistration = () => {
-  //   if (user) {
-  //     navigation.navigate('AddBusiness', {  userId: user.uid });
-  //   } else {
-  //     navigation.navigate('Login', { from: 'HomeServices' });
-  //   }
-  // }
+ 
   return (
     <ScrollView style={styles.container}>
       {/* Hero Section */}

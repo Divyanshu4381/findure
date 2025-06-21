@@ -10,6 +10,7 @@ import {
   Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { NEWS_API_BASE } from '../../config';
 
 const NewsScreen = () => {
   const [news, setNews] = useState([]);
@@ -42,7 +43,7 @@ const NewsScreen = () => {
   const fetchNews = async () => {
     try {
       const response = await fetch(
-        'http://api.mediastack.com/v1/news?access_key=99e6dca7325590f62c29dd786f734433&countries=in&languages=en&limit=20'
+        `http://api.mediastack.com/v1/news?access_key=${NEWS_API_BASE}&countries=in&languages=en&limit=20`
       );
       const json = await response.json();
       const data = json.data;
