@@ -4,7 +4,6 @@ import {
   Text, ScrollView, PermissionsAndroid, Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import BellButton from './ui/BellButton';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../context/AuthContext';
 import axios from 'axios';
@@ -12,6 +11,7 @@ import { API_BASE_URL } from '../../config';
 import Geolocation from '@react-native-community/geolocation';
 
 const HeaderSearchBar = () => {
+
   const navigation = useNavigation();
   const { user } = useUser();
 
@@ -79,16 +79,15 @@ const HeaderSearchBar = () => {
 
   const handleSearch = (text) => {
     if (text.trim()) {
-      navigation.navigate('SearchResultsScreen', { keyword: text });
+      navigation.navigate('SearchResultsScreen', { keyword: text, lat: location.latitude, lng: location.longitude });
     }
   };
 
+  
   return (
     <View style={styles.container}>
       <View style={styles.topRow}>
-        <TouchableOpacity onPress={() => user && navigation.toggleDrawer()}>
-          <Icon name="person-circle-outline" size={28} color="#A0AEC0" />
-        </TouchableOpacity>
+        
         <View style={styles.logoTextContainer}>
           <Text style={[styles.logoText, { color: '#10b981' }]}>Find</Text>
           <Text style={[styles.logoText, { color: '#fff' }]}>ure</Text>
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
   },
   topRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
   },

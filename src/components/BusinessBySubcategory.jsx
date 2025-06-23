@@ -46,7 +46,7 @@ const BusinessBySubcategory = () => {
 
   const renderBusinessCard = ({ item }) => {
     return (
-      <View style={styles.card}>
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('BusinessDetails', { business: item })}>
         <View style={styles.header}>
           <View style={styles.imageContainer}>
             {item.businessImage ? (
@@ -93,7 +93,7 @@ const BusinessBySubcategory = () => {
             <Text style={styles.actionText}>WhatsApp</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

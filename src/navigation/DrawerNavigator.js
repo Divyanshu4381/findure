@@ -11,12 +11,14 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   const navigation = useNavigation();
   const { user } = useUser();
-  const AuthProtect=({children})=>{
-    if(!user){
-      navigation.navigate('Login');
-      return null;
-    }
-    return children;
+  const AuthProtect=(Component)=>{
+     return (props) => {
+      if (!user) {
+        props.navigation.navigate('Login', { from: 'HomeStack' });
+        return null; 
+      }
+      return <Component {...props} />;
+    };
   }
   return (
     <AuthProtect>
@@ -29,7 +31,12 @@ const DrawerNavigator = () => {
       >
         <Drawer.Screen name="Main" component={BottomTabNavigator} />
         <Drawer.Screen name="Profile" component={ProfileScreen} />
-
+        <Drawer.Screen
+          name="Login"
+          component={() => null} // Placeholder for Login screen
+          options={{ drawerItemStyle: { display: 'none' } }} // Hide from drawer
+        />
+        
       </Drawer.Navigator>
     </AuthProtect>
   );

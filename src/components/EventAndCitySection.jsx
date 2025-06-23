@@ -60,9 +60,9 @@ const EventAndCitySection = () => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {cities.map((city, index) => (
           <TouchableOpacity key={index} style={styles.cityCard}
-            onPress={() => navigation.navigate('TopCities', {
-              cityName: city.name,
-            })}
+            // onPress={() => navigation.navigate('BusinessBySubcategory', {
+            //   title: city.name,
+            // })}
           >
             <Image source={city.image} style={styles.cityImage} />
             <View style={styles.overlay}>

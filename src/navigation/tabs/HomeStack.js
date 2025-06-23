@@ -6,6 +6,7 @@ import SearchResultsScreen from '../../screens/SearchResultsScreen';
 import AddBusiness from '../../screens/BusinessListingFromScreen';
 import LoginScreen from '../../screens/AuthScreen/LoginScreen';
 import { useUser } from '../../context/AuthContext'; 
+import BusinessDetailScreen from '../../screens/BusinessDetailScreen';
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
@@ -43,6 +44,16 @@ const HomeStack = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="BusinessDetails"
+        component={BusinessDetailScreen}
+        options={{
+          presentation: 'modal',
+          animation: 'slide_from_bottom',
+          headerShown: false,
+        }}
+      />
+
 
       
     </Stack.Navigator>

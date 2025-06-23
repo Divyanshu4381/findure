@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, Platform, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import HomeScreen from '../screens/HomeScreen';
-import ExploreScreen from '../screens/ExploreScreen';
 import HomeStack from './tabs/HomeStack'; 
 import ProfileStack from './tabs/ProfileStack';
 import NewsScreen from '../screens/NewsScreen';
@@ -61,7 +60,6 @@ const BottomTabNavigator = () => {
       <Tab.Screen name="Home" component={HomeStack} />
 
       {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
-      <Tab.Screen name="Explore" component={ExploreScreen} />
       <Tab.Screen name="News" component={NewsScreen} />
       <Tab.Screen name="Profile" component={ProfileStack} />
 
