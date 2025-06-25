@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import {
   View, TextInput, TouchableOpacity, StyleSheet,
   Text, ScrollView, PermissionsAndroid, Platform
@@ -9,6 +9,7 @@ import { useUser } from '../context/AuthContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 import Geolocation from '@react-native-community/geolocation';
+// import Voice from '@react-native-voice/voice';
 
 const HeaderSearchBar = () => {
 
@@ -19,6 +20,48 @@ const HeaderSearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useState({ latitude: null, longitude: null });
+  // const [isListening, setIsListening] = useState(false);
+
+  // useEffect(() => {
+  //   Voice.onSpeechStart = () => setIsListening(true);
+  //   Voice.onSpeechEnd = () => setIsListening(false);
+  //   Voice.onSpeechResults = (event) => {
+  //     const results = event.value || [];
+  //     setQuery(results);
+  //   };
+  //   Voice.destroy().then(Voice.removeAllListeners);
+  // }, []);
+  // const requestAudioPermission = async () => {
+  //   if (Platform.OS === 'android') {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+  //     );
+  //     return granted === PermissionsAndroid.RESULTS.GRANTED;
+  //   }
+  //   return true;
+  // };
+  // const startListening = async () => {
+  //   const hasPermission = await requestAudioPermission();
+  //   if (hasPermission) {
+  //     try {
+  //       await Voice.start('en-US');
+  //     } catch (error) {
+  //       console.error('Voice start error:', error);
+  //     }
+  //   }
+  // };
+
+  // const stopListening = async () => {
+  //   try {
+  //     await Voice.stop();
+  //   } catch (error) {
+  //     console.error('Voice stop error:', error);
+  //   }
+  // };
+
+  // const handleMicPress = () => {
+  //   isListening ? stopListening() : startListening();
+  // };
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -83,11 +126,11 @@ const HeaderSearchBar = () => {
     }
   };
 
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.topRow}>
-        
+
         <View style={styles.logoTextContainer}>
           <Text style={[styles.logoText, { color: '#10b981' }]}>Find</Text>
           <Text style={[styles.logoText, { color: '#fff' }]}>ure</Text>
@@ -105,11 +148,11 @@ const HeaderSearchBar = () => {
           onChangeText={setQuery}
           onSubmitEditing={() => handleSearch(query)}
         />
-        <TouchableOpacity style={styles.iconButton}>
-          <Icon name="mic-outline" size={20} color="#10b981" />
+        <TouchableOpacity style={styles.iconButton} >
+          <Icon name="mic-outline" size={20}  />
         </TouchableOpacity>
       </View>
-
+{/* {color={isListening ? 'red' : 'black'}} */}
       {suggestions.length > 0 && (
         <ScrollView style={styles.suggestionBox}>
           {loading && <Text style={styles.loadingText}>Loading...</Text>}
